@@ -1,0 +1,57 @@
+#These rules apply to sql plus
+1. DECLARE and BEGIN tell sql plus that a program is being entered
+2. semi-colon (;) terminates the line of code but not the input into the buffer. 
+The period (.) does
+3. The Run or / command compiles the block and executes
+4. the variable substitution (&) is supported in sql plus
+
+
+#start sql plus in the window command prompt
+sqlplus ##username
+##password
+
+#import file into db
+@ ##directory
+
+#look at the code in the file
+list
+
+#PL/SQL programs may write to the output buffer using the supplied DBNS_OUTPUT()
+#if we want to see the server output in the command prompt window
+set serveroutput on; #for each session
+
+#re-exercute the code
+/
+
+#turn off the output display 
+set serveroutput off
+
+#example of PL/SQL block
+
+delcare 
+--declare variable
+
+xssn varchar2(10);
+
+begin
+
+  select ssn into xssn 
+  from employee
+  where ssn = 1234567;
+  
+  dbms_output.put_line(xssn);
+end;
+.
+/
+
+#to show the output in the sql plus
+
+set serveroutput on;
+
+/
+
+#we can also edit the code with notepad within buffer
+edit
+
+#leave the sql plus to disconnect
+exit
