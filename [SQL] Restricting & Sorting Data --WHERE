@@ -1,0 +1,62 @@
+/*use WHERE to limit the selected rows*/
+SELECT * FROM employees WHERE department_id-90;
+
+/*some operators in WHERE clause to define conditions*/
+
+--the comparison operators
+SELECT * FROM employees WHERE hire_date >'17-OCT-03';
+SELECT * FROM employess WHERE first_name > 'Alberto';
+
+SELECT * FROM employees WGERE department_id <> 50;
+SELECT * FROM employees WHERE department != 50; --these two are the same
+
+
+--BETWEEN AND (NOT BETWEEN AND)
+SELECT * FROM employees WHERE salary BETWEEN 1000 AND 2000;
+--Note make sure to place the lower value before the higher value
+
+SELECT * FROM employees WHERE first_name BETWEEN 'A' AND 'C';
+
+--IN operator (NOT IN)
+SELECT * FROM employees WHERE salary IN (10000,25000,17000)
+--the value order doesn't matter here
+
+--LIKE operator (NOT LIKE)
+/* % zero or more char, _ one char */
+SELECT first_name FROM employees WHERE first_name LIKE '%am%';
+
+--ESCAPE clause
+/*supose the value contains _ or % */
+SELECT job_id FROM jobs WHERE job_id LIKE 'SA/_%' ESCAPE '/';
+--the backslash causes Oracle to interpret the underscore literally, 
+--rather than as a special pattern matching character.
+
+--NULL operator (IS NOT NULL)
+SELECT * FROM employees WHERE commission_pct IS NULL; -- = NULL is wrong
+
+--logical operators (AND / OR / NOT)
+SELECT employee_id, last_name, job_id, salary, department_id, commision_pct
+FROM   employess
+WHERE  salary > 2000
+AND    department_id in (60,90)
+AND commision_pct is null;
+
+SELECT last_name, job_id, salary
+FROM   employees
+WHERE  job_id = 'SA_REP'
+OR job_id = 'AD_PRES' AND salary > 15000; 
+-- AND has higher prioritie than OR hence there are 2 conditions 
+-- first condition  JOB_ID = 'AD_PRES' and salary > 15000
+-- second condition JOB_ID = 'SA_REP'
+
+--when using () we can override AND / OR priorities
+SELECT last_name, job_id, salary FROM  employees
+WHERE  (job_id = 'SA_REP' OR job_id = 'AD_PRES')
+AND  SALARY > 15000;
+
+
+
+
+
+
+
