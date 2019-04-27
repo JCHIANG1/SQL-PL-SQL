@@ -1,0 +1,30 @@
+/*to select all the columns/rows in a table*/
+SELECT * FROM employees;
+
+/*to select the specific columns*/
+SELECT department_id FROM departments;
+
+/*Using arithmetic expressions in SELECT (+-*/) */
+SELECT employee_id, salary*100, salary+(salary*0.1) FROM emplyees;
+--If the arithmetic expressions contains a null value the output will be nulld
+
+
+/*column alias*/
+SELECT lname, lname AS name, lname nm, lname "LASTNAME" FROM emplyees;
+
+/*concatenation operator*/
+SELECT first_name, last_name, first_name||last_name "full name", first_name||' '||last_name "full name with space"
+FROM employees;
+
+SELECT first_name || 'work in department' || department_id FROM employees;
+SELECT first_name || q'(work in department)' || department_id FROM employees;
+
+/*distinct*/
+SELECT DISTINCT department_id, job_id FROM employees;
+-- you may use multiple columns in DISTINCT
+
+/*describe / desc command*/
+DESCRIBE employees;
+DECS employees;
+
+
