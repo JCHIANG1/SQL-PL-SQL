@@ -19,13 +19,14 @@ BEGIN
   SELECT superssn
   INTO ManagementList(1) --(1) very first instance/ row 
   FROM employee
-  WHERE superssn IS NOT NULL AND ROWNUM <= 1;
+  WHERE superssn IS NOT NULL AND ROWNUM <= 1; --ROWNUM specify the number of records to return
   
   --retrieve the second supervisor
   SELECT superssn
   INTO ManagementList(2)
   FROM employee 
-  WHERE superssn IS NOT NULL AND ROWNUM <=1 AND superssn <> ManagementList(1);
+  WHERE superssn IS NOT NULL 
+  AND ROWNUM <=1 AND superssn <> ManagementList(1);
   
   --retrieve the first worker
   SELECT essn 
