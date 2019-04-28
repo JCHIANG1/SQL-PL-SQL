@@ -1,0 +1,36 @@
+/* ROWTYPE record*/
+-- look at the entire fields from the table
+-- a complex type that defines a record matching the names and data type of an entire table or view
+
+DELCARE
+  rowEmp1 employee%ROWTYPE; -- just take the table name
+  rowEmp2 employee%ROWTYPE;
+  
+BEGIN
+  --fill the fields
+  rowEmp1.lname :='Doe';
+  rowEmp1.fname :='John';
+  
+  rowEmp2.lname :='Don';
+  rowEmp2.fname :='Jane';
+  
+  --output records
+  DBMS_OUTPUT.PUT_LINE('Row 1 is' || rowEmp1.lname)
+  
+END;
+
+--Another Example
+DECLARE
+  x_emp employee%ROWTYPE;
+
+BEGIN
+  --retrieve the salary data
+  SELECT fname, lname, sex, salary
+  INTO x_emp.fname, x_emp.lname, x_emp.salary
+  FROM employee
+  WHERE SSN = '123456789';
+  
+  --display the results
+  DBMS_OUTPUT.PUT_LINE(x_emp.fname||' '||x_emp.lname||'salary is'||x_emp.salary)
+
+END;
