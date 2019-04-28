@@ -1,19 +1,10 @@
-/*
+/* 
 The DECLARE Clause is used to denfine an internal program object that can temporary store things,
 these objects include variable / boolean (True/False/Null) / constant / record (a series of fields, one value per field)/
 table/ user-defined type
 */
 
-declare
-       -- define variables
-       EmpLname     varchar2(20);
-       EmpSalary    number(6);
-       EmpBdate     date;
-begin
-....
-END;
-
-/*
+/* 
 some rules for naming a declared object:
 1. maximum length is 30 char
 2. the first char must be a letter
@@ -21,11 +12,13 @@ some rules for naming a declared object:
    sone illegal character include &, _, /, (space)
 */
 
-/* setting the defaul value */
+/* Example */
 declare
-       --definitions are the same
+       --variables
        nEmpSalary     number(6) := 25000;
        nEmpSaly       number(6) default 25000;
+       
+       --boolean
        bEndOfLoop     boolean := FALSE;
        
        --defining a not null variable
