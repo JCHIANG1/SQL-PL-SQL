@@ -1,0 +1,43 @@
+/* %TYPE */
+
+--variable data type may be dynamically matched to any columns within the Oracle table
+DECLARE
+  x_salary employee.salary%TYPE; --apply the data type for the x_salary from the salary column of employee table 
+BEGIN
+...
+END;
+
+--%TYPE referencing a schema
+DECLARE
+  x_Lname    smith.employee.lname%TYPE;
+BEGIN
+...
+END;
+
+--maintain internal consistency
+DECLARE
+  x_MinSalary    employee.salary%TYPE;
+  x_AvgSalary    x_MinSalary%TYPE;
+  xMaxSalary     x_MinSalary%TYPE;
+BEGIN
+...
+END;
+
+
+/*an example block*/
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+  x_salary  employee.salary%TYPE;
+  x_last    employee.lname%TYPE;
+
+BEGIN
+  SELECT salary, lname 
+  INTO x_salary, x_last 
+  FROM employee 
+  WHERE SSN ='12345678';
+  
+  DBMS_OUTPUT.PUT_LINE(x_last || 'salary is $' || x_salary);
+  
+END
