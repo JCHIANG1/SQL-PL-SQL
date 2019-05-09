@@ -1,5 +1,5 @@
 /*use WHERE to limit the selected rows*/
-SELECT * FROM employees WHERE department_id-90;
+SELECT * FROM employees WHERE department_id=90;
 
 /*some operators in WHERE clause to define conditions*/
 
