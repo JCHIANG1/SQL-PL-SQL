@@ -6,7 +6,7 @@ SELECT department_id FROM departments;
 
 /*Using arithmetic expressions in SELECT (+-*/) */
 SELECT employee_id, salary*100, salary+(salary*0.1) FROM emplyees;
---If the arithmetic expressions contains a null value the output will be nulld
+--If the arithmetic expressions contains a null value the output will be null
 
 
 /*column alias*/
