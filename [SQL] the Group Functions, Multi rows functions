@@ -1,0 +1,63 @@
+--GROUP FUNCTIONS
+-- MIN and MAX function
+SELECT MAX(salary), MIN(salary) FROM employees;
+
+--use the MIN and MAX with varchar
+SELECT MAX(first_name), MIN(first_name) FROM employees;
+
+--use the MIN and MAX with date
+SELECT MAX(hire_date), MIN(hire_date) FROM employees;
+
+--SUM and AVG function
+--these two functions cannot apply on date and varchar
+SELECT SUM(salary), AVG(salary) FROM employees;
+
+--COUNT function
+--COUNT(*) return number of rows in a table including duplicate rows 
+  and null values.
+-- COUNT(column) ignore null values, null not counted   
+SELECT COUNT(*) FROM employees;
+SELECT COUNT(1) FROM employees; -- this is equal to count(*)
+SELECT COUNT(commission_pct) FROM employees;
+
+--handle null value using NVL function
+SELECT COUNT(NVL(commision_pct,0)) FROM employees;
+
+--GROUP BY
+-- all columns in the select should appear in GROUP BY except for the 
+   collumns in the group functions
+SELECT department_id, SUM(salary) FROM employess;
+
+-- all columns in the select should appear in GROUP BY
+SELECT department_id, job_id, SUM(salary) FROM employees
+GROUP BY department_id, job_id
+ORDER BY 1,2;
+
+--unlike ORDER BY, GROUP BY doesn't apply with the alias 
+X 
+SELECT department_id d, SUM(salary) FROM employees GROUP BY D;
+
+OK!
+SELECT department_id d, SUM(salary) FROM employees 
+GROUP BY department_id
+ORDER BY d;
+
+--WHERE, GROUP BY and ORDER BY
+SELECT department_id, SUM(salary) FROM employees
+WHERE department_id>30
+GROUP BY department_id
+ORDER BY department_id;
+
+--use HAVING to restrict GROUP not WHERE
+SELECT department_id, SUM(salary) FROM employees
+GROUP BY department_id
+HAVING SUM(salary) > 150000
+ORDER BY department_id;
+
+--the nested group functions
+--only 2 group function can be nested
+SELECT MAX(SUN(salary))
+FROM employees 
+GROUP BY department_id
+ORDER BY 1;
+
