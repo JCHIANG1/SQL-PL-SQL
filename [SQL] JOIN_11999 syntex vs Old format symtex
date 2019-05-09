@@ -67,6 +67,7 @@ SELECT employees.employee_id, employees.first_name, departments.department_id, d
 FROM employess, departments
 WHERE employees.department_id(+)=departments.department_id; --(+) belongs to the side that have the null
 
+----------
 --FULL OUTER JOIN
 SELECT employees.employee_id, employees.first_name, departments.department_id, departments.department_name
 FROM employees FULL OUTER JOIN departments
