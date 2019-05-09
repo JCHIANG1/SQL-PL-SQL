@@ -1,0 +1,49 @@
+--SQL 1999 syntex vs Old format symtex
+
+--NATURAL JOIN
+--it will be applied on all columns in the 2 tables that have the same name
+--it selects rows from the two tables that have all equal value in all matched columns
+-if the matched columns have the same name but with different data type then an error will return
+
+SELECT department_id. department_name, location_id, city
+FROM department NATURAL JOIN locations;
+
+--old format as EQUIJOIN
+--can only apply the alias on the shared column
+
+SELECT department_id, department_name, departments.location_id, city
+FROM departments, locations 
+WHERE departments.location_id = location.location_id;
+
+
+--JOIN with USING clause
+--the NATURAL JOIN and USING clause are mutually exclusive
+--can be used to solve the above NATURAL JOIN problem:
+--same column name with different data type
+--can be modified with the USING clause to match only one column when more than one column is matched
+--DO NOT use table name or alias in the referenced columns
+
+SELECT e.employee_id, e.last_name, d.location_id
+FROM employees e JOIN departments d
+USING (department_id);
+
+--old format
+SELECT employee_id, last_name, employees.department_id, location_id
+FROM employees, departments
+WHERE employees.department_id = departments.department_id;
+
+--JOIN wiTh ON clause
+--to specify arbitrary conditions 
+--or specify columns to join
+
+SELECT employees.employee_id, employees.first_name, 
+departments.department_id #here the prefix should be used
+departments.department_name
+FROM employees JOIN departments ON (employees.department_id=departments.department_id);
+
+--old format
+
+SELECT employees.employee_id, employees.first_name, departments.department_id, departments.department_name
+FROM employees, departments
+WHERE employees.department_id=departments.department_id;
+
