@@ -9,7 +9,7 @@ SELECT * FROM employees ORDER BY commission_pct NULLS FIRST;
 SELECT first_name n FROM employees ORDER BY n;
 
 -- sort the output by expression
-SELECT employee_id, salary, sa;ary+100 FROM employees ORDER BY salary+100;
+SELECT employee_id, salary, salary+100 FROM employees ORDER BY salary+100;
 
 -- sort the output by the column not in the output
 SELECT employee_id, salary FROM employees ORDER BY department_id;
