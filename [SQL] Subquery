@@ -1,0 +1,70 @@
+--if the subquery return no row, then all select return no rows
+
+--Find a list of employer who have salary > Abel's salary, note Abel is the last name
+--when using single-row operator ( =, >,<, >=,<=, <>, != )
+--then the subquery should return also single row
+
+SELECT employee_id, first_name, last_name, salary 
+FROM employees
+WHERE salary > (SELECT salary FROM employees WHERE last_name='Abel');
+
+SELECT * FROM employees 
+WHERE job_id =(SELECT job_id FROM employees WHERE last_name='Abel')
+
+---------
+--using group function in subquery
+--look for a list of employee who have the highest salary
+SELECT * FROM employees 
+WHERE SALARY=(SELECT MAX(salary) FROM employees);
+
+---------
+--subquary with HAVING clause
+SELECT department_id, COUNT(employee_id)
+FROM employees 
+GOUP BY department_id
+HAVING COUNT(employee_id)>(SELECT COUNT(1) FROM employees WHERE department_id =90);
+
+---------
+--multiple rows subquery
+--should be used with (IN/NOT IN/ ANY/ ALL)
+--IN is Equivalent to  =any
+SELECT employee_id, first_name, last_name, salary FROM employees
+WHERE salary IN (SELECT salary FROM employees WHRER department_id=90);
+
+SELECT employee_id, first_name, last_name, salary FROM employees
+WHERE salary >=ANY (SELECT salary FROM employees WHRER department_id=90);
+
+SELECT employee_id, first_name, last_name, salary FROM employees
+WHERE salary >= ALL(SELECT salary FROM employees WHRER department_id=90);
+
+---------
+--the subquery is acceptable to return NULL with operator IN
+--because IN is Equivalent to =any
+SELECT * FROM employeers 
+WHERE manager_id IN (100,101,NULL)
+
+--if the subquery returns NULL with operator NOT IN 
+  then no revords will be retrive
+--NOT IN  is  Equivalent  TO  <>all
+SELECT * FROM employeers 
+WHERE manager_id NOT IN (100,101,NULL)
+--so if  the subquery set contains one null value, then the query will retrieve no records
+SELECT * FROM employees 
+WHERE employee_id NOT IN (SELECT manager_id FROM employees);
+
+---------
+--EXISTS / NOT EXISTS
+--retrieve all the departments info that have employees 
+SELECT * FROM departments
+WHERE department_id IN (SELECT department_id FROM employees)
+
+SELECT * FROM departments dept
+WHERE EXISTS (SELECT department_id FROM employees emp WHERE emp.department_id = dept.department_id) 
+
+--retrieve all the departments info that have employees 
+SELECT * FROM departments dept
+WHERE NOT EXISTS (SELECT department_id FROM employees emp WHERE emp.department_id = dept.department_id) 
+
+
+
+
