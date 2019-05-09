@@ -57,6 +57,7 @@ WHERE employees.department_id=departments.department_id;
 --3. USING clause encourages foreign keys to have the same names as primary keys
 --4. ON clause can be used in the three way joins
 
+---------
 --RIGHT OUTER JOIN
 SELECT employees.employee_id, employees.first_name, departments.department_id, departments.department_name
 FROM employess RIGHT OUTTER JOIN departmens
