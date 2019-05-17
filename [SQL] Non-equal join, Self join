@@ -1,0 +1,27 @@
+-- some examples of non-equal joins
+SELECT EMP.employee_id, EMP.first_name, EMP.salary, GRAD.grade_level
+FROM employees EMP, job_grades GRAD
+WHERE EMP.salary BETWEEN GRAD.lowest_sal AND GRAD.highest_sal;
+
+SELECT EMP.employee_id, EMP.first_name, EMP.salary, GRAD.grade_level
+FROM employees EMP, job_grades GRAD
+WHERE EMP.salary >=GRAD.lowest_sal 
+AND <= GRAD.highest_sal;
+
+--Self Join
+SELECT WORKER.employee_id, WORKER.first_name, WORKER.manager_id, MANAGER.first_name
+FROM employees WORKER, employees MANAGER
+WHERE WORKER.manager_id=MANAGER.employee_id;
+
+/*
+Retrieve all the employees (employee_id, first_name, dept_id ) whose salary is >2500
+And display their department name, and department location and department city and country
+All employees should appear even if they have no department
+*/
+
+SELECT EMP.employee_id, EMP.first_name, EMP.dept_id, DEP.department_name, LOC.city, CON.country_name
+FROM employees EMP, departments DEP, locations LOC, country CON
+WHERE EMP.department_id = DEP.department_id (+)
+AND DEP.location_id = LOC.location_id (+)
+AND LOC.country_id = CON.country_id (+)
+AND EMP.salary>2500;
