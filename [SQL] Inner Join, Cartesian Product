@@ -1,0 +1,26 @@
+--note that DEPARTMENT_ID is fk to table DEPARTMENTs 
+
+--Equijoins/ simple join/ inner join
+SELECT EMP.employee_id, EMP.first_name, EMP.department_id, DEP.department_name
+FROM employees EMP, departments DEP
+WHERE EMP.department_id = DEP.department_id
+ORDER BY employee_id;
+
+--adding addtional conditions
+SELECT EMP.employee_id, EMP.first_name, EMP.department_id, DEP.department_name
+FROM employees EMP, departments DEP
+WHERE EMP.department_id = DEP.department_id
+AND EMP.department_id >40
+ORDER BY employee_id;
+
+--Inner Join more than 2 tables
+SELECT EMP.employee_id, EMP.first_name, EMP.department_id, DEP.department_name, DEP.location_id. LOC.city
+FROM employees EMP, departments DEP, locations LOC
+WHERE EMP.department_id=DEP.department_id
+AND DEP.location_id = LOC.location_id
+ORDER BY employee_id;
+
+--cartesian product, display data from multiple tables without join
+SELECT EMP.employee_id, EMP.first_name, DEP.department_id, DEP.department_name
+FROM employees EMP, departments DEP
+ORDER BY employee_id;
