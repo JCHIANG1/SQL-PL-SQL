@@ -1,0 +1,51 @@
+-- difference between union and inner join
+The UNION operator is used to combine tables with same number of columns with same data type in row wise direction. 
+the output removes duplicate rows and orders in ascending order.
+
+when join tables on the column, the records from tables will return and combine in column wise direction when the value on the
+shared column is matched.
+
+--difference between union and union all
+unlike union operator, the union all operator does not remove duplicate rows and for defaul the output is not in any order
+
+--<the set operators-UNION, UNION ALL, INTERSECT, MINUS>
+--UNION
+SELECT employee_id, job_id FROM employees
+WHERE employee_id=176
+UNION
+select employee_id, job_id FROM job_history
+WHERE employee_id=176;
+
+--the column name in the first query appears in the result
+--so the output here will have column name emp_id and job
+SELECT employee_id emp_id, job_id job FROM employess
+UNION
+SELECT employees_id emno, job_id jobID FROM job_history;
+
+--matching the dummy column
+SELECT employee_id, job_id, email FROM employees
+UNION 
+SELECT employee_id, job_id, to_char(null) email FROM job_history;
+
+SELECT employee_id, job_id, salary FROM employees
+UNION 
+SELECT employee_id, job_id, 0 salary FROM job_history;
+
+--the ORDER BY clause comes last and appears once
+SELECT employee_id, job_id, salary FROM employees
+UNION 
+SELECT employee_id, job_id, 0 salary FROM job_history
+ORDER BY employee_id;
+
+--the ORDER BY clause can only be used by the colum names in the first query 
+-- with the queries that have different column names we can use column number
+
+SELECT employee_id emp_id, job_id job FROM employess
+UNION
+SELECT employees_id emno, job_id jobID FROM job_history
+ORDER BY emp_id; --using emno will run into error
+
+SELECT employee_id emp_id, job_id job FROM employess
+UNION
+SELECT employees_id emno, job_id jobID FROM job_history
+ORDER BY 1; 
