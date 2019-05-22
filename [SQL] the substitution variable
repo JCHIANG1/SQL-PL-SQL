@@ -1,0 +1,64 @@
+--The single ampersand(&) and double-ampersand(&&) can be used to temporarily store values
+
+--The single ampersand(&)
+--when using & the varaible will be discarded after it is used
+SELECT employee_id, last_name, salary, department_id
+FROM employees
+WHERE employee_id = &employee_num;
+
+--using & in varchar
+SELECT employee_id, first_name, last_name, salary, department_id
+FROM employees
+WHERE first_name='&name'; -- WHERE first_name=&name ==> another way to handle varchar is to include '' in the provided value
+
+--using & in columns name and WHERE condition expressions
+SELECT employee_id, last_name, job_id, &columns_name --salary
+FROM employees
+WHERE  &condition -- salary>10000
+ORDER BY &order_column;
+
+--DEFINE and UNDEFINE command
+--use the DEFINE command to create and assign a value to a variable, the varaible is valid for the session only
+--use the UNDEFINE command to remove a variable
+DEFINE employee_num =200;
+SELECT employee_id, last_name, salary, department_id
+FROM employees
+WHERE employee_id = &employee_num;
+UNDEFINE employee_num;
+
+--another way to define a variable with customized message
+ACCEPT dept_id PROMPT 'Please enter dept id';
+SELECT * FROM employees
+WHERE department_id = &depat_id;
+UNDEFINE dept_id;
+
+ACCEPT emp_from PROMPT 'Please enter employee from';
+ACCEPT emp_to PROMPT 'please enter employee to';
+SELECT * FROM employees
+WHERE employee_id between &emp_from and &emp_to;
+UNDEFINE emp_from;
+UNDEFINE emp_to;
+
+--the double ampersend (&&)
+--when using double && we define the variable and assign the value at the same time, and the variable can be re-use
+SELECT * FROM departments
+WHERE department_id=&&p;
+UNDEFINE P;
+
+--SET VERIFY ON/ SET VERIFY OFF
+--The VERIFY setting controls whether or not SQL*Plus displays before and after images of each line that contains a substitution variable
+
+--using && in column names
+SELECT employee_id, last_name, job_id, &&column_name
+FROM employees
+ORDER BY &&column_name;
+UNDEFINE columns_name;
+
+-- SET DEFINE ON / SET DEFINE OFF
+-- we use the SET DEFINE OFF to prevent oracle server to display the prompt window
+SET DEFINE OFF;
+SELECT * FROM departments
+WHERE department_name LIKE '%&t%'; --without setting the define off the oracle server will suppose that & is calling the substitute variable
+SET DEFINE ON; -- use this command to start the prompt window again
+
+
