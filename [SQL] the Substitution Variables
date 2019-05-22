@@ -1,6 +1,6 @@
 --The single ampersand(&) and double-ampersand(&&) can be used to temporarily store values
 
---The single ampersand(&)
+--<The single ampersand(&)>
 --when using & the varaible will be discarded after it is used
 SELECT employee_id, last_name, salary, department_id
 FROM employees
@@ -17,7 +17,7 @@ FROM employees
 WHERE  &condition -- salary>10000
 ORDER BY &order_column;
 
---DEFINE and UNDEFINE command
+--<DEFINE and UNDEFINE command>
 --use the DEFINE command to create and assign a value to a variable, the varaible is valid for the session only
 --use the UNDEFINE command to remove a variable
 DEFINE employee_num =200;
@@ -26,7 +26,7 @@ FROM employees
 WHERE employee_id = &employee_num;
 UNDEFINE employee_num;
 
---another way to define a variable with customized message
+--<another way to define a variable with customized message>
 ACCEPT dept_id PROMPT 'Please enter dept id';
 SELECT * FROM employees
 WHERE department_id = &depat_id;
@@ -39,7 +39,7 @@ WHERE employee_id between &emp_from and &emp_to;
 UNDEFINE emp_from;
 UNDEFINE emp_to;
 
---the double ampersend (&&)
+--<the double ampersend (&&)>
 --when using double && we define the variable and assign the value at the same time, and the variable can be re-use
 SELECT * FROM departments
 WHERE department_id=&&p;
