@@ -1,4 +1,4 @@
---character functions
+--<character functions>
 --case conversion function (upper, lower, initcap)
 -- INITCAP('the soap') ==> The Soap
 SELECT employee_id, first_name, UPPER(first_name), LOWER(first_name), INITCAP(first_name) 
@@ -43,4 +43,34 @@ TRIM(' ' FROM '     tech    ') -- 'tech'
 TRIM(BOTH '1' FROM '123tech1111') --23tech
 TRIM(LEADING '0' FROM '00012435') -- '12435'
 TRIM(TRAILING '1' FROM 'tech1') --'tech'
+
+--<Number function>
+--round function
+-- the function returns a number rounded to a certain number of decimal places
+--round(number,decimal places) dp by default is 0
+ROUND(125.315)--125
+ROUND(234.315,0)--234
+ROUND(125.315,1)--125.3
+SELECT ROUND(570.493, -3) FROM DUAL; --1000
+SELECT ROUND(570.493, -2) FROM DUAL; --600
+SELECT ROUND(470.493, -3) FROM DUAL; --0
+SELECT ROUND(1470.493, -3) FROM DUAL; --1000
+
+--trunc function
+-- the function returns a value truncated to a specific unit of measure
+SELECT TRUNC(10.6565) FROM DUAL; --10
+SELECT TRUNC(10.6565, 2) FROM DUAL; --10.65
+SELECT TRUNC(998.6565, -2) FROM DUAL; --900
+SELECT TRUNC(9998.6565, -2) FROM DUAL; --9900
+SELECT TRUNC(998.6565, -3) FROM DUAL; --0
+
+TRUNC(TO_DATE('22-AUG-03'), 'YEAR') --'01-JAN-03'
+
+
+--mod function
+--the function returns the remainder, is often use to know if the number id odd or even by divided by 2 
+SELECT MOD(15,2) FROM DUAL; --1
+
+
+
 
