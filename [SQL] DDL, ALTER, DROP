@@ -1,4 +1,4 @@
---<ALTER>
+--<ALTER> ADD/MODIFY/DROP (column data type, constraint)
 --using ALTER to add column
 ALTER TABLE e_emp
 ADD (gender char(1));
@@ -47,6 +47,13 @@ ADD (created_by varchar2(100))
 --DDL => DROP is not allowed
 
 ALTER TABLE e_emp2 READ WRITE; --DML DELETE is allow now
+
+--rename the column
+ALTER TABLE e_emp2
+RENAME COLUMN deptname TO depat_name;
+
+-rename the table
+RENAME xx_dept_table TO xx_dept_t;
 
 --<DROP>
 DROP TABLE e_emp2;
