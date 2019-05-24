@@ -1,4 +1,3 @@
---insert
 --<insert>
 --always see the table structure before inserting the redords 
 DESC departments;
