@@ -1,0 +1,41 @@
+--<UPDATE>
+--it is logical to make update based on the PK for the table
+--making update on other conditions may be dangerous
+UPDATE employees
+SET salary=24100
+WHERE employee_id =100;
+COMMIT;
+
+--update more than one column in the same tine
+UPDATE copy_emp
+SET salary=24000, department_id=10
+WHERE employee_id=100;
+COMMIT;
+
+--if there is no where condition then the update will be for all the tables
+UPDATE copy_emp
+SET phone_number='515.123.4567';
+
+--set collumn to null value during update
+UPDATE copy_emp
+SET department_id = NULL
+WHERE employee_id=100;
+COMMIT;
+
+--using subquery in update
+UPDATE copy_emp
+SET salary=(SELECT salary FROM copy_emp WHERE employee_id=200)
+WHERE employee_id=100;
+COMMIT;
+
+--make the salary and department_id for employee 105 like the salary and department_id for employee 108
+--<method 1>
+UPDATE copy_emp
+SET (salary,department_id) = (SELECT salary, department_id FROM employees WHERE employee_id =108
+WHERE employee_id =105;
+
+--<method 2>
+UPDATE copy_emp
+SET salary = (SELECT salary FROM employees WHERE employee_id =108),
+SET department_id = (SELECT department_id FROM employees WHERE employee_id =108)
+WHERE employee_id =105;
