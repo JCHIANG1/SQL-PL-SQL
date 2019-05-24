@@ -1,1 +1,64 @@
+--<ALTER>
+--using ALTER to add column
+ALTER TABLE e_emp
+ADD (gender char(1));
+
+ALTER TABLE e_emp
+ADD (comession NUMBER default 0 NOT NULL); --NOT NULL constraint by itself will not work, it only works when the table is empty, or the column is set with default value
+
+ALTER TABLE e_emp
+ADD (created_date DATE DEFAULT SYSDATE,
+     created_by VARCHAR2(100) DEFAULT USER);
+
+
+--using ALTER to modify the data type and constraints
+ALTER TABLE e_emp
+MODIFY (created_by varchar2(200));
+
+ALTER TABLE e_emp
+MODIFY (created_by NOT NULL);
+
+--drop columns
+ALTER TABLE e_emp DROP COLUMN created_by; -drop single column
+ALTER TABLE e_emp DROP (gender, created_date) -drop multiple columns
+
+--set unused
+--Once columns are marked as unused, for all practical purposes, end user cannot see it.
+--SELECT statement will not return the columns marked as unused. Even describe command also ignores the unused columns. 
+--USER_UNUSED_COL_TABS view can show the information
+--Marking column as unused is advantageous in the environment where data set is very large. 
+--Dropping column physically may take long time instead marking them as unused is done in no time 
+--and columns are not viewable to the outside world.
+
+ALTER TABLE e_emp 
+SET UNUSED (sal);
+
+-- Unused column retains the data until they are dropped.
+ALTER TABLE e_emp
+DROP UNUSED COLUMNS;
+
+--alter table read / write
+ALTER TABLE e_emp2 READ ONLY; 
+
+--DML =>DELETE not allowed 
+--DDL => ALTER ADD allowed, because the statement is not changing the data 
+ALTER TABLE e_emp2
+ADD (created_by varchar2(100))
+--DDL => DROP is not allowed
+
+ALTER TABLE e_emp2 READ WRITE; --DML DELETE is allow now
+
+--<DROP>
+DROP TABLE e_emp2;
+
+--check the droped table
+SELECT * FROM user_recyclebin
+WHERE original_name = 'e_emp2';
+
+
+
+
+
+
+
 
