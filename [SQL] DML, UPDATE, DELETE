@@ -39,3 +39,46 @@ UPDATE copy_emp
 SET salary = (SELECT salary FROM employees WHERE employee_id =108),
 SET department_id = (SELECT department_id FROM employees WHERE employee_id =108)
 WHERE employee_id =105;
+
+
+--<DELETE>
+--deleting records
+DELETE FROM dept_copy
+WHERE department_id = 10;
+
+--you can rollback the delete
+ROLLBACK;
+
+--the keyword FROM is optimal in DELETE
+DELETE dept_copy
+WHERE department_id=10;
+
+--if there is no WHERE clause then all rows in the table will be delete
+DELETE FROM depat_copy;
+
+--delete based on subquery
+DELETE FROM dept_copy
+WHERE department_id IN (SELECT department_id FROM dept_copy WHERE department_name LIKE '%PUBLIC%');
+
+--situation that delete clause doesn't work
+-- when other table contains foreign key to the table you want to perform delete and the child record is found you cannot perform delete
+-- solve this by: alter the foreign key constraint with delete cascade option 
+-- this will delete child table rows related to master table rows when deleted
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
