@@ -1,0 +1,54 @@
+--insert
+--<insert>
+--always see the table structure before inserting the redords 
+DESC departments;
+
+INSERT INTO departments (department_id, department_name, manager_id, location_id)
+VALUES (71,'Development 1',100,1700);
+COMMIT; --use the commit command to save the changes
+
+--make insert without puting the columns names, but the order in values should be same order of table
+INSERT INTO departments
+VALUES (71,'Development 1',100,1700);
+COMMIT;
+
+--customized the columns order, but the values should be mapped accrodingl 
+INSERT INTO departments (department_name, manager_id, location_id,department_id)
+VALUES('Development 3',100,1700,73) ;
+COMMIT;
+
+--inserting rows with null values
+--the implicit method
+INSERT INTO departments (department_id, department_name)
+VALUES (74,'development 4'); -- in this case, the oracle server will make the value null for the manager_id and location_id
+
+--the explicit method
+--user specify the null value
+INSERT INTO departments (department_id, department_name, manager_id, location_id)
+VALUES (75,'Development 5',null,null);
+
+--insert rows with date
+--<sysdate>
+INSERT INTO employees(employee_id,first_name,last_name,email,hire_date,job_id)
+VALUES (1,'khaled','khudari','khaled@hotmail.com',SYSDATE,'IT_PROG')
+
+--<to_date function>
+INSERT INTO employees(employee_id,first_name,last_name,email,hire_date,job_id)
+VALUES(2,'Samer','ali','samer@hotmail.com',to_date('20-07-2015','dd-mm-yyyy'),'IT_PROG');
+
+--using the & with insert
+INSERT INTO departments(department_id, department_name)
+VALUES(&dept_id,'&d_name');
+
+--insert with subquery
+INSERT INTO employee_tb(empno,fname,salary)
+SELECT employee_id, first_name,salary FROM employees
+
+--some potential errors with insert
+--1.inserting existing value, and the values is PK
+--2. inserting FK values not exist in the reference table
+--3. inserting mis-match data type
+--4. inserting values that are too long
+
+
+
