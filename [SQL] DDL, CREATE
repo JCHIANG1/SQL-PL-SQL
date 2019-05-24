@@ -1,0 +1,58 @@
+--<create>
+--table naming rules
+1. the table name should start with letter
+2. the table name should be 30 char or less
+3. table name can contain A-Z, a-z, $, #
+4. table name cannot be duplicated with other object's name and oracle reserved words
+
+--create table with constraints
+--table level constraints (the best practice because it forces you to name the constraints)
+CREATE TABLE emp_test
+(
+emp_id1 NUMBER,
+emp_id2 NUMBER,
+ename varchar2(100),
+salary NUMBER NOT NULL,
+gender CHAR(1),
+dept_id NUMBER,
+CONSTRAINT emp_pk PRIMARY KEY (emp_id1,emp_id2),
+CONSTRAINT emp_uk UNIQUE(ename),
+CONSTRAINT emp_chq CHECK(gender IN ('M','F')),
+CONSTRAIN emp_fk FOREIGN KEY (dep_id) REFERENCES departments (department_id)
+);
+
+--column level constrains
+CREATE TABLE emp_test
+(
+emp_id NUMBER CONSTRAINT emp_test_pk PRIMARY KEY,
+ename VARCHAR2(100) CONSTRAINT emp_test_uk1 UNIQUE,
+salary NUMBER NOT NULL,
+gender CHAR(1) CONSTRAINT emp_chq CHECK(gender in ('M','F')),
+dept_id NUMBER CONSTRAINT emp_const_fk1 REFERENCES (department_id));
+
+--on delete cascade
+-- this constraint allows you to delete the record in the main table that is referenced by another table and have child records
+CREATE TABLE emp1
+(
+empid NUMBER PROMARY KEY,
+ENAME VARCHAR2(100),
+DEPTNO NUMBER,
+CONSTRAINT EMP1_FK FOREIGN KEY (DEPTNO) REFERENCES DPET1(departno) ON DELETE CASCADE
+);
+
+--on delete set null constraint
+-- this constraint allows you to delete the record in the main table and set the foreign key value as null
+
+--check the table you coreated in a dictionary table USER_TABLES
+SELECT table_name FROM USER_TABLES;
+
+--check all the tables in database for any owner in a dictionary table ALL_TABLES
+SELECT owner, table_name FROM ALL_TABLES
+WHERE owner='HR';
+
+--check the user_constraints from the table in a dictionary table USER_CONSTRAINTS
+SELECT * FROM USER_CONSTRAINTS
+WHERE table_name = 'emp_tb';
+
+
+
