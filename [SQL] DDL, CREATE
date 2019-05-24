@@ -54,5 +54,13 @@ WHERE owner='HR';
 SELECT * FROM USER_CONSTRAINTS
 WHERE table_name = 'emp_tb';
 
+--create table using subquery
+CREATE TABLE e_emp
+AS (SELECT employee_id, first_name, last_name, salart, department_id FROM employees WHERE department_id =90 );
+
+--create table setting colums with default value
+CREATE TABLE e_emp2(emp_id, fname, lname, sal DEFAULT 0, dep_id)
+AS (SELECT employee_id, first_name,last_name, salary, department_id FROM employees WHERE department_id=90) ; 
+
 
 
