@@ -1,0 +1,8 @@
+
+
+--GLOBAL TEMPORARY TABLE
+--a table that hold data that exits only for the duration of the transaction session
+
+--SQL*LOADER
+--a bulk loader utility used for moving data from external files into the oracle database
+
