@@ -18,11 +18,6 @@ ADD (created_date DATE DEFAULT SYSDATE,
 ALTER TABLE salary_grades
 ADD (average_salary AS ((low_salary+high_salary)/2)); 
 
---adding a CHECK constraint
-ALTER TABLE order
-ADD CONSTRAINT order_status_ck
-CHECK (status IN ('PLACED','PENDING','SHIPPED'));
-
 ALTER TABLE order
 ADD CONSTRAINT order_id_ck CHECK (id>0);
 
