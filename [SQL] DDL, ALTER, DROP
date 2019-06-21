@@ -1,4 +1,7 @@
---<ALTER> ADD/MODIFY/DROP (column data type, constraint)
+--<ALTER> 
+1) column: ADD/MODIFY[length|precision|data type|default value]/DROP 
+2) constraint: ADD/DROP/ENABLE/DISABLE
+
 --using ALTER to add column
 ALTER TABLE e_emp
 ADD (gender char(1));
@@ -10,10 +13,29 @@ ALTER TABLE e_emp
 ADD (created_date DATE DEFAULT SYSDATE,
      created_by VARCHAR2(100) DEFAULT USER);
 
+-- adding a virtual column
+--A virtual column is a column that refers only to other columns already in the table.
+ALTER TABLE salary_grades
+ADD (average_salary AS ((low_salary+high_salary)/2)); 
 
---using ALTER to modify the data type and constraints
+--adding a CHECK constraint
+ALTER TABLE order
+ADD CONSTRAINT order_status_ck
+CHECK (status IN ('PLACED','PENDING','SHIPPED'));
+
+ALTER TABLE order
+ADD CONSTRAINT order_id_ck CHECK (id>0);
+
+--using ALTER to modify 
+--modify the length for CHAR or VARCHAR2
 ALTER TABLE e_emp
 MODIFY (created_by varchar2(200));
+
+ALTER TABLE order
+MODIFY id NUMBER(4);
+
+ALTER TABLE order
+MODIFY last_modified DEFAULT SYSDATE -1;
 
 ALTER TABLE e_emp
 MODIFY (created_by NOT NULL);
