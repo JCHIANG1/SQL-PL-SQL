@@ -1,4 +1,4 @@
-# user_table view (getting information on table)
+#user_table view (getting information on table)
 SELECT table_name, tablespace_name, temporary FROM user_tables
 WHERE table_name IN ('abc');
 --tablespace_name, Name of the tablespace in which the table is stored. A tablespace is an area used by the database to store objects such as tables
@@ -13,4 +13,17 @@ WHERE table_name='abc';
 #all_tab_columns view
 --retrieve information on all the columns in tables you have access .
 
+#user_constraints view
+--owner|constraint_name|constraint_type|table_name|status|deferrable|defferred (IMMEDIATE or DEFERRED)
 
+#all_constraints view
+--retrieve information on all the constraints you have access to by querying the all_constraints view.
+--owner|constraint_name|table_name|column_name
+
+#user_cons_columns view
+--retrieve information on the constraints for a column
+--constraint_name | column_name | table_name
+--we can join user_constraints and user_cons_columns to get the column_name, constraint_name, constraint_type, and status
+
+#all_cons_columns
+--access all the conlumn constraints 
