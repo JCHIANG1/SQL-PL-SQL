@@ -27,3 +27,11 @@ WHERE table_name='abc';
 
 #all_cons_columns
 --access all the conlumn constraints 
+
+#user_tab_comments
+--retrieve the table comments 
+--table_name| table_type | comments
+
+#user_col_comments
+--retrieve the column comments
+--table_name | column_name | comments
