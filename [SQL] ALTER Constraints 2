@@ -1,0 +1,67 @@
+7. DISABLE and ENABLE CONSTRAINTS
+--add CASCADE after DISABLE CONSTRAINT to disable all constraints that depend on the specified constraint.
+ALTER TABLE emp2 
+DISABLE CONSTRAINT emp2_pk;
+
+ALTER TABLE emp2
+ENABLE CONSTRAINT emp2_pk;
+
+ALTER TABLE emp2
+DISABLE CONSTRAINT emp2_pk CASCADE;
+
+--with new data: apply a constraint to new data only by specifying ENABLE NOVALIDATE
+--The default is ENABLE VALIDATE, which means existing rows must pass the constraint check.
+ALTER TABLE order
+ENABLE NOVALIDATE CONSTRAINT order_status_uq;
+
+8. rename the column name
+ALTER TABLE emp2
+RENAME COLUMN first_name TO fname;
+
+9. rename the constraint name
+ALTER TABLE emp2
+RENAME CONSTRAINT emp2_pk TO new_emp2_pk;
+
+10. Deferring a constraint
+--a deferred constraint is one that is enforced when a transaction is committed,
+--we use the DEFERREABLE clause when we initially add the constraint
+--once the constraint is added, we cannot change it to DEFERRABLE, instead we need to drop and re-create the constraint.
+
+--DEFERRABLE INITIALLY DEFFERED vs. DEFERRABLE INITIALLY IMMEDIATE
+--If a constraint is created with the DEFERRABLE keyword it can act in one of two ways (INITIALLY IMMEDIATE, INITIALLY DEFERRED). 
+--The default, INITIALLY IMMEDIATE, the constraint is checked whenever we add, update or delete rows from table.
+--The INITIALLY DEFERRED keyword causes constraint validation to defer until commit.
+
+--the advantage to use DERERRABLE option is that we can use IMMEDIATE/DEFERRED interchangablely
+
+CREATE TABLE emp_sal
+(
+emp_id NUMBER,
+sal NUMBER,
+bonus NUMBER,
+CONSTRAINT sal_ck CHECK(sal>100),
+CONSTRAINT bouns_ck CHECK(bonus>0)
+)
+ --any DML not meet the constraint the error will immediately display
+ INSERT INTO emp_sal(emp_id,sal,bonus)
+ VALUES(1,90,5);
+
+--drop constraints and re-create them 
+ALTER TABLE emp_sal
+DROP CONSTRAINT sal_ck;
+
+ALTER TABLE emp_sal
+DROP CONSTRAINT bouns_ck;
+
+--ADD CONSTRAINT WITH DEFERRABLE option
+ALTER TABLE emp_sal
+ADD CONSTRAINT sal_ck CHECK(sal>100) DEFERRABLE INITIALLY DEFERRED; 
+INSERT INTO emp_sal(emp_id,sal,bonus)
+VALUES(1,90,5); -- it will be violated when commit
+
+ALTER TABLE emp_sal
+ADD CONSTRAINT bouns_ck CHECK(bonus>0) DEFERRABLE INITIALLY IMMEDIATE;
+INSERT INTO emp_sal(emp_id,sal,bonus)
+VALUES(1,200,-1); -- the violation will arise immediately
+SET CONSTRAINT sal_ck IMMEDIATE;
+
