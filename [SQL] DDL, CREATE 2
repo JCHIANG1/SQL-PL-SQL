@@ -1,0 +1,29 @@
+-- about columns
+
+1. binary_float vs binary_double types
+
+2. using DEFAULT ON NULL 
+--the clause assigns a default value to a column when INSERT statement supplies a null value for the column
+CREATE TABLE purchase(
+purchase_id INTEGER DEFAULT ON NULL 1 NOT NULL
+);
+
+3. using VISIBLE and INVISIBLE columns 
+--use VISIBLE to indicate that a column is visible, and INVISIBLE to indicate that a column is
+--invisible. by default is visible. Invisible columns are not shown by the DESCRIBE command.
+CREATE TABLE example(
+title VARCHAR(20) VISIBLE,
+salary NUMBER(6,0) INVISIBLE);
+
+--to view the invisible column
+--to hide invisible columns, use SET COLINVISIBLE OFF. The
+SET COLINVISIBLE ON
+DESCRIBE example;
+
+--when INSERT the value, the column name cannot be implcitly set whe an invisible column is involved
+--when using SELECT * the invisible column value will not display in the result set, we have to explicitly request the column for the result
+--alter a table to make visible columns invisible and invisible columns visible
+ALTER TABLE employees_hidden_example MODIFY (
+title INVISIBLE,
+salary VISIBLE
+);
