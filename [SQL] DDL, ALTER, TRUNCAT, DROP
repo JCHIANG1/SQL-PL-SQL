@@ -76,6 +76,19 @@ RENAME xx_dept_table TO xx_dept_t;
 COMMENT ON TABLE order_status IS 'test';
 COMMENT ON COLUMN order_status.col1 IS 'test2';
 
+--<truncat>
+-- TRUNCAT removes all the rows from the table and resets the storage area for the table.
+
+-- DELETE vs TRUNCAT
+-- A TRUNCATE statement doesn’t require any undo space in the database, 
+-- we don’t have to run a COMMIT to make the delete permanent
+
+TRUNCAT TABLE order_status;
+
+TRUNCATE TABLE parent_table CASCADE;
+--would truncate any child tables, grandchild tables, and so on.
+--All tables that reference the specified table using an enabled ON DELETE CASCADE constraint are truncated. 
+
 --<DROP>
 DROP TABLE e_emp2;
 
