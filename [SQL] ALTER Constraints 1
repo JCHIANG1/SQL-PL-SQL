@@ -1,0 +1,51 @@
+1. adding primary key
+-- provide constraint name
+ALTER TABLE emp2
+ADD CONSTRAINT emp2_pk PRIMARY KEY(employee_id);
+--without constraint name
+ALTER TABLE emp2
+MODIFY employee_id PRIMARY KEY ---here the constraint name will be sys_cn%
+
+2. adding a CHECK constraint
+ALTER TABLE order
+ADD CONSTRAINT order_status_ck
+CHECK (status IN ('PLACED','PENDING','SHIPPED'));
+
+3. adding a NOT NULL constraint
+--this will work only if the table is empty or the column has value for all rows
+ALTER TAVLE emp2
+MODIFY first_name NOT NULL;
+
+ALTER TABLE order 
+MODIFY status CONSTRAINT order_status_nn NOT NULL;
+
+4. adding the foreign constraint
+--you can add ON DELETE CASCADE | ON DELETE SET NULL clause in the end of the ALTER statement
+-- to specify when a row in the parent table is deleted, any matching rows in the child table are also deleted |set NULL
+
+--provide constraint name
+ALTER TABLE emp2
+ADD CONSTRAINT emp2_fk_dept FOREIGN KEY(department_id) REFERENCES dept2(department_id);
+
+--without name
+ALTER TABLE emp2
+MODIFY department_id REFERENCES dept2(department_id);
+
+5. adding a Unique constraint
+ALTER TABLE order
+ADD CONSTRAINT order_status_uq UNIQUE(status);
+
+6. droping a constraint
+ALTER TABLE order_status
+DROP CONSTRAINT order_status_uq;
+
+ALTER TABLE emp2
+DROP CONSTRAINT &CON_NAME;
+
+ALTER TABLE emp2
+DROP PRIMARY KEY CASCADE; --it will drop all the related constraints
+
+
+
+
+
