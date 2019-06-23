@@ -27,4 +27,9 @@ SELECT DISTINCT department_id, job_id FROM employees;
 DESCRIBE employees;
 DECS employees;
 
-
+--Arithmetic expression on NULL values
+--any arithmetic expression which involves a null value returns a null value as the output
+SELECT 10 + NULL FROM DUAL;
+SELECT 10 * NULL FROM DUAL;
+SELECT 10 / NULL FROM DUAL;
+SELECT 10 - NULL FROM DUAL;
