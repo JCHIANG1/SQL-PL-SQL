@@ -20,7 +20,8 @@ SELECT COUNT(*) FROM employees;
 SELECT COUNT(1) FROM employees; -- this is equal to count(*)
 SELECT COUNT(commission_pct) FROM employees;
 
---handle null value using NVL function
+--group function will ignore the null (AVG|COUNT)
+--to take null into consideration use NVL function
 SELECT COUNT(NVL(commision_pct,0)) FROM employees;
 
 --GROUP BY
