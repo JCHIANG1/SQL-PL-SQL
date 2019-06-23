@@ -1,0 +1,40 @@
+--A hierarchy is built when one row is the parent of another row
+--the CONNECT BY specifies the relationship between parent rows and child rows 
+--LEVEL is a pseudo-column which returns the depth of the hierarchy
+
+SELECT first_name, level, manager FROM salaesperson
+CONNECT BY PRIOR first_name = manager
+START WITH manager IS NULL; --manager has no one to report to on the manager field
+
+--represent the hierarchical data in the hierarchy tree 
+SELECT CONCAT(LPAD(' ',level*3-3),first_name) as first_name
+FROM salesperson
+CONNECT BY PRIOR first_name = manager
+START WITH manager IS NULL;
+
+--sorting the hierarchy tree
+--ORDER SIBLINGS BY
+SELECT CONCAT(LPAD(' ',level*3-3),first_name) as first_name
+FROM salesperson
+CONNECT BY PRIOR first_name = manager
+START WITH manager IS NULL
+ORDER SIBLINGS BY salesperson.first_name DESC; -- if use ORDER BY merely the data will be sort in alphabetic instead of hierarchy
+
+--CONNECT_BY_ROOT operator
+SELECT fist_name, level, manager, CONNECT_BY_ROOT first_name AS top_boss
+FROM salesperson
+CONNECT BY PRIOR first_name = manager
+START WITH manager IS NULL; --we can also skip one level of hierarchy here by specifying the manager name as the root manager
+
+--creat a report to return the total sales of each sales person under the manager Raj in the hierarchy
+
+SELECT hier.top_boss, hier.first_name, SUM(sales.total_amount)
+(
+SELECT salesperson_id, first_name, manager, level, CONNECT_BY_ROOT first_name AS top_boss 
+FROM salesperson
+CONNECT BY PRIOR first_name = manager
+START WITH manager = 'Raj'
+) hier, sales
+WHERE hier.salesperson_id = sales.salesperson_id
+GROUP BY hier.top_boss,hier.first_name
+ORDER BY 1;
