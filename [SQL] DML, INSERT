@@ -50,4 +50,18 @@ SELECT employee_id, first_name,salary FROM employees
 --4. inserting values that are too long
 
 
+--insert multiple rows into the same table
+INSERT ALL
+INTO customer1(customer_id,customer_name) VALUES(1,'JOHN')
+INTO customer1(customer_id,customer_name) VALUES(2,'ANN')
+INTO customer1(customer_id,customer_name) VALUES(3,'AMY')
+SELECT * FROM DUAL;
+
+--insert multiple rows into different table
+INSERT ALL
+INTO customer1(customer_id,customer_name) VALUES(1,'JOHN')
+INTO customer1(customer_id,customer_name) VALUES(2,'ANN')
+INTO sales1(sales_date,order_id,total_amount) VALUES('12-JAN-2015',345,900)
+SELECT * FROM DUAL;
+
 
