@@ -2,12 +2,25 @@
 --the CONNECT BY specifies the relationship between parent rows and child rows 
 --LEVEL is a pseudo-column which returns the depth of the hierarchy
 
+--CONNECT BY clause for number generation
+--this script will generate a column named c_number with value 1-200
+SELECT level AS c_number
+FROM DUAL
+CONNECT BY LEVEL <=200;
+
+--the hierarchy data structure
 SELECT first_name, level, manager FROM salaesperson
 CONNECT BY PRIOR first_name = manager
 START WITH manager IS NULL; --manager has no one to report to on the manager field
 
 --represent the hierarchical data in the hierarchy tree 
 SELECT CONCAT(LPAD(' ',level*3-3),first_name) as first_name
+FROM salesperson
+CONNECT BY PRIOR first_name = manager
+START WITH manager IS NULL;
+
+--display the hierarchy path
+SELECT salesperson_id, first_name, level, SYS_CONNECT_BY_PATH(first_name,'/') AS hier1
 FROM salesperson
 CONNECT BY PRIOR first_name = manager
 START WITH manager IS NULL;
@@ -38,3 +51,7 @@ START WITH manager = 'Raj'
 WHERE hier.salesperson_id = sales.salesperson_id
 GROUP BY hier.top_boss,hier.first_name
 ORDER BY 1;
+
+
+
+
