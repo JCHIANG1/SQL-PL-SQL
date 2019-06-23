@@ -27,3 +27,19 @@ ALTER TABLE employees_hidden_example MODIFY (
 title INVISIBLE,
 salary VISIBLE
 );
+
+3. DEFAULT
+-- the default helps us avoiding entering the value for that default column everytime we insert data
+
+CREATE TABLE customer1
+(
+customer_id NUMBER,
+customer_name VARCHAR2(20),
+exp_date DATE DEFAULT TO_DATE('31-dec-2099','dd-mon-yyyy')
+)
+
+INSERT INTO customer1(customer_id,customer_name)
+VALUES(1,'jones');
+
+INSERT INTO customer1(customer_id,customer_name,exp_date)
+VALUES(2,'ANN',DEFAULT);
