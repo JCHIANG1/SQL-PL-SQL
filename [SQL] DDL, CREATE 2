@@ -28,7 +28,7 @@ title INVISIBLE,
 salary VISIBLE
 );
 
-3. DEFAULT
+4. DEFAULT
 -- the default helps us avoiding entering the value for that default column everytime we insert data
 
 CREATE TABLE customer1
@@ -43,3 +43,35 @@ VALUES(1,'jones');
 
 INSERT INTO customer1(customer_id,customer_name,exp_date)
 VALUES(2,'ANN',DEFAULT);
+
+5. VIRTUAL COLUMN
+--virtual columns appear like normal table column, but the values are derived at run time rather than being stored on disc.
+--save disk space, and need not update data if formula changes.
+
+-- method 1
+CREATE TABLE SALES1
+(
+sales_date date,
+order_id number,
+total_amount number(10,2)
+commission as (total_amount*0.01)
+);
+
+--method 2
+CREATE TABLE SALES1
+(
+sales_date DATE,
+order_id NUMBER,
+total_amount NUMBER(10,2)
+commission NUMBER GENERATED ALWAYS AS (total_amount*0.01)
+);
+
+
+
+
+
+
+
+
+
+
