@@ -62,3 +62,4 @@ FROM employees
 GROUP BY department_id
 ORDER BY 1;
 
+
