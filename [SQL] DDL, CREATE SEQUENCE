@@ -40,7 +40,7 @@ last_modified DATE DEFAULT SYSDATE
 CREATE SEQUENCE s_order_status2 NOCACHR; 
 --when using a sequence to populate a primary key column
 --we should use NOCACHE to avoid gaps in the sequence of numbers however using NOCACHE reduces performance 
-
+--if we are absolutely sure that gaps in the primary key values are not a problem for the application, then consider using CACHE.
 
 INSERT INTO order_status2(id,status,last_modified)
 VALUES(s_order_status2.NEXTVAL,'PLACED','01-JAN-2006');
