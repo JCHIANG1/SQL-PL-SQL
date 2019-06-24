@@ -13,8 +13,38 @@ START WITH 10 INCREMENT BY -1
 MINVALUE 1 MAXVALUE 10
 CYCLE CACHR 5;
 
+--initialize the sequence
+--before retrieving the current value, we have to initialize the sequence by retrieving the next value
+SELECT s_test.NEXTVAL FROM DUAL; -- 1
+
+--once the sequence is initialized above, we can get the current value
+SELECT s_test.CURRVAL FROM DUAL; -- 1
+
+--when retrieve the CURRVAL the NEXTVAL remains unchanged, the value for NEXTVAL only changes when you retrieve NEXTVAL to get the next value.
+SELECT s_test.NEXTVAL, s_test.CURRVAL FROM DUAL; -- 2 , 2
+
+--the cycling optionin s_test2
+SELECT s_test2.NEXTVAL FROM DUAL; --10
+SELECT s_test2.NEXTVAL FROM DUAL; --15
+SELECT s_test2.NEXTVAL FROM DUAL; --20
+SELECT s_test2.NEXTVAL FROM DUAL; --10
+
+--populate a primary key using a sequence
+CREATE TABLE order_status2
+(
+id INTEGER CONSTRAINT order_status2_pk PRIMARY KEY,
+status VARCHAR2(10),
+last_modified DATE DEFAULT SYSDATE
+);
+
+CREATE SEQUENCE s_order_status2 NOCACHR; 
+--when using a sequence to populate a primary key column
+--we should use NOCACHE to avoid gaps in the sequence of numbers however using NOCACHE reduces performance 
 
 
+INSERT INTO order_status2(id,status,last_modified)
+VALUES(s_order_status2.NEXTVAL,'PLACED','01-JAN-2006');
 
-
+INSERT INTO order_status2(id,status,last_modified)
+VALUES(s_order_status2.NEXTVAL,'pending','01-JAN-2006');
 
