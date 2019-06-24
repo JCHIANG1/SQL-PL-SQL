@@ -1,2 +1,13 @@
---A sequence is a database item that generates a sequence of integers. You
+--A sequence is a database item that generates a sequence of integers. 
+
+--create sequence without specify the parameter, therefore the default value 1 for START_NUM and INCREMENT_NUM is used
+CREATE SEQUENCE s_test;
+
+CREATE SEQUENCE s_test2
+START WITH 10 INCREMENT BY 5
+MINVALUE 10 MAXVALUE 20
+CYCLE CASHE 2 ORDER;
+
+
+
 
