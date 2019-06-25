@@ -1,5 +1,4 @@
 --A sequence is a database item that generates a sequence of integers. 
-
 --create sequence without specify the parameter, therefore the default value 1 for START_NUM and INCREMENT_NUM is used
 CREATE SEQUENCE s_test;
 
@@ -47,4 +46,35 @@ VALUES(s_order_status2.NEXTVAL,'PLACED','01-JAN-2006');
 
 INSERT INTO order_status2(id,status,last_modified)
 VALUES(s_order_status2.NEXTVAL,'pending','01-JAN-2006');
+
+--specifying a default column value using a seequence
+CREATE SEQUENCE a_default_value_for_column;
+CREATE TABLE test_with_sequence
+(
+id INTEGER CONSTRAINT test_with_sequence_pk PRIMARY KEY,
+sequence_value INTEGER DEFAULT s_default_value_for_column.NEXTVAL
+)
+
+--the following INSERT statement add rows to the table
+--If the sequence is dropped, then subsequent INSERT statements will generate an error
+INSERT INTO test_with_sequence(id) VALUES(1);
+INSERT INTO test_with_sequence(id) VALUES(2);
+INSERT INTO test_with_sequence(id) VALUES(3);
+
+--using identity column
+CREATE TABLE test_with_identity
+(
+id INTEGER CONSTRAINT test_with_identity_pk PRIMARY KEY,
+identity_value INTEGER GENERATE BY DEFAULT AS IDENTITY(START WITH 5 INCRMENT BY 2)
+);
+
+INSERT INTO test_with_identity (id) VALUES (1);
+INSERT INTO test_with_identity (id) VALUES (2);
+INSERT INTO test_with_identity (id) VALUES (4);
+
+SELECT * FROM test_with_identity;
+--1   5
+--2   7
+--4   9
+
 
