@@ -51,3 +51,15 @@ WITH CHECK OPTION CONSTRAINT cheap_products_view2_price;
 
 --when attempts to insert a row using cheap_products_view2 with a price of
 --$19.50. The database returns an error because the row isn’t retrievable by the view.
+
+--create a view with a READ ONLY constraint
+CREATE VIEW cheap_products_view3 AS
+SELECT * FROM products 
+WHERE price < 15
+WITH READ ONLY CONSTRAINT cheap_products_view3_read_only;
+
+--If attempts to insert a row using cheap_products_view3. 
+--The database returns an error because the view is read-only and doesn’t allow DML statements
+
+--getiing information on View Definitions
+DESCRIBE cheap_products_view3
