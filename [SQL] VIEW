@@ -13,7 +13,7 @@ WHERE table_name='abc';
 # all_tab_columns view
 --retrieve information on all the columns in tables you have access .
 
-#user_constraints view
+# user_constraints view
 --owner|constraint_name|constraint_type|table_name|status|deferrable|defferred (IMMEDIATE or DEFERRED)
 
 # all_constraints view
@@ -44,4 +44,11 @@ ORDER BY sequence_name;
 --order_flag: whether the sequence is ordered (Y or N)
 
 # all_sequence
+
+# user_indexes view
+--retrieve information on the indeses 
+--index_name, table_owner, table_name, uniqueness(UNIQUE or NONUNIQUE), status(VALID or INVALID),index_name,table_name,column_name
+
+# all_indexes view
+
 
