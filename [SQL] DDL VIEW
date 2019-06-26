@@ -52,7 +52,24 @@ WITH CHECK OPTION CONSTRAINT cheap_products_view2_price;
 --when attempts to insert a row using cheap_products_view2 with a price of
 --$19.50. The database returns an error because the row isn’t retrievable by the view.
 
+
+--creating and using complex view
+CREATE VIEW products_and_types_view AS
+SELECT p.product_id, p.name, pt.name, p.price
+FROM products p FULL OUTER JOIN product_types pt
+USING(product_type_id)
+ORDER BY p.product_id;
+
+CREATE VIEW product_average_view AS
+SELECT product_type_id, AVG(price) average_price
+FROM products 
+WHERE price < 15
+GROUP BY product_type_id
+HAVING AVG(price) >13
+ORDER BY product_type_id;
+
 --create a view with a READ ONLY constraint
+--READ ONLY constraint prevent modifications to the rows in the base table
 CREATE VIEW cheap_products_view3 AS
 SELECT * FROM products 
 WHERE price < 15
@@ -63,3 +80,44 @@ WITH READ ONLY CONSTRAINT cheap_products_view3_read_only;
 
 --getiing information on View Definitions
 DESCRIBE cheap_products_view3
+
+--modifying a view
+--replace a view by the command CREATE OR REPLACE VIEW
+CREATE OR REPLACE VIEW product_average_view AS
+SELECT product_type_id, AVG(price) average_price
+FROM products
+WHERE price < 12
+GROUP BY product_type_id
+HAVING AVG(price) >11
+ORDER BY product_type_id;
+
+--alter the constraints on a view using ALTER VIEW
+ALTER VIEW cheap_products_view2
+DROP CONSTRAINT cheap_products_view2_price;
+
+--drop a view
+DROP VIEW cheap_products_view2
+
+--using visible and invisible columns in a view
+--we use VISIBLE to make a column visible, and INVISIBLE to make a column invisible, the column is visible by default.
+--the salary column will not be shown in the result set
+CREATE VIEW employee_hidden_salary_view
+(employee_id, manager_id, first_name, last_name,
+title VISIBLE, salary INVISIBLE)
+AS
+SELECT employee_id, manager_id, first_name, last_name, title, salary FROM employees; 
+
+--the salary column will not shown in the result set
+SELECT *FROM employees_hidden_salary_view;
+
+--to view an invisible column, we have to explicitly request the salary column at the end of the column list
+SELECT employee_id, manager_id, first_name, last_name, title, salary 
+FROM employees_hidden_salary_view;
+
+
+
+
+
+
+
+
