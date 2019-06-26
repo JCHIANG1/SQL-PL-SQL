@@ -1,10 +1,13 @@
 --the database indexes are used to find specific rows in a table
+--an index basically contains a pointer to a row in a table that contains a given index key value
+--the key value is used to get the rowid for the row in the table.
 
 --create a B-tree index
 --a column contains a unique value for each row
 --oracle database automatically creates a B-tree index for the primary key or columns included in a unique constraint
 --for performance reasons, we should typically store indexes in a different tablespace from tables
 --with the index, the previous query will take less time to complete. 
+--in a B-tree index, a list of rowids is stored for each key corresponding to the rows with that key value.
 
 CREATE INDEX i_customers_last_name ON customers(last_name);
 
@@ -27,6 +30,23 @@ CREATE INDEX i_func_customers_last_name ON customers(UPPER(last_name));
 --the default is FALSE to take advantage of function-based indexes
 CONNECT system
 ALTER SYSTEM SET QUERY_REWRITE_ENABLED = TRUE;
+
+--modify an index
+ALTER INDEX i_customers_phone RENAME TO i_customers_phone_number;
+
+--drop an index
+DROP INDEX i_customers_phone_number;
+
+--bitmap index
+--bitmap index are often used in data warehoues which are databases containing very large amounts of data
+--a candidate for a bitmap index is a column that has the following properties
+--1) referenced in many queries
+--2) contains only a small range of values  --PLACED, PENDING, SHIPPED, REMOVED
+--3) used in tables whose content are not modified a lot
+
+CREATE BITMAO INDEX i_order_status ON order_status(status);
+
+
 
 
 
