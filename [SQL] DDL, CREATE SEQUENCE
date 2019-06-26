@@ -77,4 +77,19 @@ SELECT * FROM test_with_identity;
 --2   7
 --4   9
 
+--modify a sequence
+--1. cannot change the start value of the sequence
+--2. the min value cannot be more than the current value of the sequence
+--3. the max value cannot be less than the current value of the sequence
+
+ALTER SEQUENCE s_test 
+INCREMENT BY 2;
+
+SELECT s_test.CURRVAL FROM DUAL; --2
+
+SELECT s_test.NEXTVAL FROM DUAL; --4
+
+--dropping a sequence
+
+DROP SEQUENCE s_test3;
 
