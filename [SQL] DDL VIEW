@@ -1,0 +1,53 @@
+--A view is a predefined query on one or more tables
+--With some views, we can also perform DML operations on the base tables
+--Views don’t store rows, rows are always stored in tables, views return the rows stored in tables
+
+--view benefits
+1)place a complex query into a view and grant users access to the view, allow us to hide complexity from users
+2)we can stop users from directing querying the base table by granting them access only to the view
+3)we can allow a view to access only certain rows in the base tables, this allows you to hide rows from an end user
+
+--simple view vs complex view
+--simple view contain a subquery that retrieves from one base table
+--complex view contain a subquery that retrieves from multiple base tables| group rows using GROUP BY or DISTINCT clause | contains a function call
+
+--grant privilege for views
+CONNECT SYSTEM
+GRANT CREATE VIEW TO store;
+
+--create and using simple views
+CREATE VIEW cheap_products_view AS
+SELECT * FROM products WHERE price <15;
+
+CREATE VIEW employees_view AS 
+SELECT employee_id, manager_id, first_name, last_name, title FROM employees;
+
+--performing query on a view
+SELECT * FROM cheap_products_view;
+SELECT * FROM employees_view;
+
+--performing INSERT in a VIEW
+--we can perform DML statements only with simple views. Complex views don’t support DML.
+INSERT INTO cheap_products_view(product_id,product_type_id,name,price)
+VALUES(13, 1, 'Western Front', 13.50)
+
+--INSERT, UPDATE and DELETE the rows from the base table that are not retrievable by the view (because there is no WITH CHECK OPTION)
+INSERT INTO cheap_product_view(product_id, product_type_id, name, price)
+VALUES(14,1,'Eastern Front',16.5); --the condition for the cheap_product_view is price <15
+
+SELECT * FROM cheap_products_view WHERE product_id=14; --no rows are selected here
+
+--The employees_view contains a subquery that selects every column from employees except salary
+INSERT INTO employees_view(employee_id,manager_id,first_name,last_name,title) 
+VALUES('Jeff','Jones','CTO')
+
+--When performing an INSERT using employees_view, the salary column in the employees base table will be set to null
+SELECT employee_id, first_name, last_name, salary FROM employees WHERE employee_id=5;
+
+--creating a view with a CHECK OPTION Constraint
+CREATE VIEW cheap_products_view2 AS 
+SELECT * FROM products WHERE price < 15
+WITH CHECK OPTION CONSTRAINT cheap_products_view2_price;
+
+--when attempts to insert a row using cheap_products_view2 with a price of
+--$19.50. The database returns an error because the row isn’t retrievable by the view.
