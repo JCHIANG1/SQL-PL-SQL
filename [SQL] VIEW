@@ -57,3 +57,17 @@ ORDER BY sequence_name;
 
 # all_ind_columns
 
+# user_views
+--retrieve information about the views
+--view_name, text_length, text
+
+# all_views
+
+# user_constraints view
+--constraint_name, C , status, deferrable, defferred
+--C : V ==> CHECK OPTION constraint
+--C : O ==> READ ONLY constraint
+
+
+
+
