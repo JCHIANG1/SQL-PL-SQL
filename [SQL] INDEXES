@@ -1,0 +1,33 @@
+--the database indexes are used to find specific rows in a table
+
+--create a B-tree index
+--a column contains a unique value for each row
+--oracle database automatically creates a B-tree index for the primary key or columns included in a unique constraint
+--for performance reasons, we should typically store indexes in a different tablespace from tables
+--with the index, the previous query will take less time to complete. 
+
+CREATE INDEX i_customers_last_name ON customers(last_name);
+
+--enforce uniqueness of column values using a unique index
+CREATE UNIQUE INDEX i_customers_phone ON customers(phone);
+
+--create a composite index on multiple columns
+CREATE INDEX i_employees_first_last_name ON employees(first_name,last_name);
+
+--creating a function based index
+
+--the query uses a function -UPPER(), in this case the i_customers_last_name index isn't used
+SELECT first_name, last_name FROM customers
+WHERE last_name = upper('BROWN');
+
+--if we want the index to be based on the results of a function, we must create a function-based index
+CREATE INDEX i_func_customers_last_name ON customers(UPPER(last_name));
+
+--In addition, the database administrator must set the initialization parameter QUERY_REWRITE_ENABLED to TRUE
+--the default is FALSE to take advantage of function-based indexes
+CONNECT system
+ALTER SYSTEM SET QUERY_REWRITE_ENABLED = TRUE;
+
+
+
+
