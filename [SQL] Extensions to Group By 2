@@ -1,0 +1,39 @@
+--ROLLUP and CUBE consider each column independently when deciding which subtotals must be calculated
+
+--ROLLUP(sales_month, product_name, city) --n+1 combination
+--(sales_month, product_name, city)
+--(sales_month, product_name)
+--(sales_month)
+--()
+
+--CUBE(sales_month, product_name, city) --2**n combination
+--(sales_month, product_name, city)
+--(sales_month, product_name)
+--(sales_month, city)
+--(sales_month)
+--(product_name, city)
+--(product_name)
+--(city)
+--()
+
+--Composite columns
+--composite columns allow columns to be grouped together with braces so they are treated as a single unit when determinging the necessary groupings
+
+--ROLLUP((a,b),c) --2+1=3
+--(a,b,c)
+--(a,b)
+--()
+
+--CUBE((a,b),c)
+--(a,b,c)
+--(a,b)
+--(c)
+--()
+
+SELECT TRUNC(s)
+
+
+FROM sales s, product p, customer c
+WHERE s.product_id=p.product_id
+AND s.customr_id=c.customer_id
+
