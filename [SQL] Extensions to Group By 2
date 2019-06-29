@@ -30,10 +30,13 @@
 --(c)
 --()
 
-SELECT TRUNC(s)
-
-
+SELECT TRUNC(s.sales_date,'mon') AS sales_month,
+p.product_name,
+c.city,
+SUM(sales_amount) AS sales_amount
 FROM sales s, product p, customer c
 WHERE s.product_id=p.product_id
 AND s.customr_id=c.customer_id
+GROUP BY CUBE((TRUNC(sales_amount,'mon'),p.product_name),c.city)
+ORDER BY TRUNC(sales_amount,'mon'),p.product_name,c.city;
 
