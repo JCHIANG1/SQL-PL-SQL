@@ -1,0 +1,81 @@
+--As database grows biger it becomes challenging for the database to process data, therefore we can use the partitioning to break the 
+big table into multiple pieces.
+--advantage: partitioning eenables data management operations such as data loads, index creation and rebuilding and backup, recovery at 
+the partition level rather than on the entire table.==> reduce time and improve query performance
+
+--Range Partition
+--Range partitioning is a technique that store data separately in different sub-tables based on the data range
+--create a table with 12 partition and each partition holds a month worth data
+CREATE TABLE sales1
+(
+customer_id NUMBER,
+order_date DATE,
+order_amount NUMBER,
+region VARCHAR2(10)
+)
+PARTITION BY RANGE(order_date) --use a column to partition the data
+(
+partition sales_dec VALUES LESS THAN (TO_DATE('01-jan-2015','dd-mon-yyyy')),
+partition sales_jan VALUES LESS THAN (TO_DATE('01-feb-2015','dd-mon-yyyy')),
+partition sales_feb VALUES LESS THAN (TO_DATE('01-mar-2015','dd-mon-yyyy')),
+partition sales_mar VALUES LESS THAN (TO_DATE('01-apr-2015','dd-mon-yyyy')),
+partition sales_apr VALUES LESS THAN (TO_DATE('01-may-2015','dd-mon-yyyy')),
+partition sales_may VALUES LESS THAN (TO_DATE('01-jun-2015','dd-mon-yyyy')),
+partition sales_jun VALUES LESS THAN (TO_DATE('01-july-2015','dd-mon-yyyy')),
+partition sales_jly VALUES LESS THAN (TO_DATE('01-aug-2015','dd-mon-yyyy')),
+partition sales_aug VALUES LESS THAN (TO_DATE('01-sep-2015','dd-mon-yyyy')),
+partition sales_sep VALUES LESS THAN (TO_DATE('01-oct-2015','dd-mon-yyyy')),
+partition sales_oct VALUES LESS THAN (TO_DATE('01-nov-2015','dd-mon-yyyy')),
+partition sales_nov VALUES LESS THAN (TO_DATE('01-dec-2015','dd-mon-yyyy')),
+partition sales_2016 VALUES LESS THAN (MAXVALUE) --if the value is greater than 01-dec-2015 then it will be stored in this partition
+);
+
+INSERT INTO sales1 VALUES(1,'12-jan-2015',10,east);
+SELECT * FROM sales1 PARTITION(sales_jan);
+
+
+--list partition
+--a partitioning technique where we can specify a list of discrete values for the partitioning key in the description for each partition
+CREATE TABLE sales2
+(
+custiner_id NUMBER,
+sales_date DATE,
+sales_amount NUMBER,
+region VARCHAR2(10)
+)
+PARTITION BY LIST (region)
+(
+PARTITION pa VALUES ('east'),
+PARTITION pw VALUES ('west'),
+PARTITION pne VALUES ('south','east')
+);
+
+INSERT INTO sales2 VALUES (1,'12-jan-2015',10,'east');
+
+SELECT * FROM sales2 PARTITION (pa);
+
+--hash partition
+--hash partitioning is a technique where a hash key is used to distribute rows evenly across the different partitions(sub-tables).
+This is typically used where ranges aren't appropriate, i.e. customer id, product id, etc.
+
+CREATE TABLE sales3
+(
+customer_id NUMBER,
+order_date DATE,
+sales_amount NUMBER,
+region VARCHAR2(10)
+)
+PARTITION BY HASH (customer_id)
+(
+PARTITION p1,
+PARTITION p2,
+PARTITION p3
+);
+
+INSERT INTO sales3 VALUES (1,'12-jan-2015',10,'east');
+
+SELECT * FROM sales3 PARTITION (p1); -- we cannot control the assignment of customer_id, they are assigned randomly
+
+
+
+
