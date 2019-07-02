@@ -1,0 +1,21 @@
+--composite partition
+--a technique that combines some of the other partitioning method
+CREATE TABLE sales4
+(
+customer_id NUMBER,
+order_date DATE,
+order_amount NUMBER,
+region VARCHAR2(10)
+)
+PARTITION BY RANGE(order_date)
+SUBPARTITION BY HASG(customer_id) SUBPARTITIONS 4
+(
+PARTITION sales_p6 VALUES LESS THAN (TO_DATE('2015-07-01','YYYY-MM-DD')),
+PARTITION sales_p7 VALUES LESS THAN (TO_DATE('2015-08-01','YYYY-MM-DD')),
+PARTITION sales_p8 VALUES LESS THAN (TO_DATE('2015-09-01','YYYY-MM-DD')),
+PARTITION sales_pmax VALUES LESS THAN (MAXVALUE)
+);
+
+--interval partition
+--this technique automatically creates time-based partitions as new data is added
+
