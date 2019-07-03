@@ -12,17 +12,37 @@ COUNT, VARIANCE, STDDEV
 current row.
 
 
---Example 1) compare non-aggregated data and aggregated data
+--Example 1) combine non-aggregated data and aggregated data
 --before analytical functions
 SELECT sales_date, order_id, product_id, sales_amount,avg_samount
-FROM sales,(SELECT AVG(sales_amount) AS avg_samount FROM sales);
+FROM sales,(SELECT AVG(sales_amount) AS avg_samount FROM sales); 
 
 --applying the analytical function 
 SELECT sales_date, order_id, product_id, sales_amount,
-AVG(sales_amount) OVER () AS avg_samount
+AVG(sales_amount) OVER () AS avg_samount --avg sales_amount for the entire table
 FROM sales;
 
 --applying the analytical function based on specific window instead of the whole table
 SELECT sales_date, order_id, product_id, sales_amount,
 AVG(sales_amount) OVER (PARTITION BY sales_date) AS sales_amount
 FROM sales;
+
+--Example 2) aggregates are displayed for different groups of data
+SELECT sales_date, order_id, product_id, sales_amount,
+AVG(sales_amount) OVER () AS avg_sales,
+AVG(sales_amount) OVER (PARTITION BY sales_date) AS avg_sales_day,
+AVG(sales_amount) OVER (PARTITION BY TRUN(sales_date,'mon')) AS avg_sales_month
+FROM sales
+ORDER BY 1;
+
+--Example 3) obtain the cumulative sales total, row by row for all sales
+SELECT sales_date, order_id, product_id, sales_amount, 
+SUM(sales_amount) OVER (order by sales_date, order_id, product_id) AS cum_sum
+FROM sales;
+
+--Example 4) show the sales as a percentage of total sales by using RATIO_TO_REPORT 
+SELECT TRUNC(sales_date,'mon') AS sales_month,
+SUM (total_amount) AS total_amount,
+ROUND(RATIO_TO_REPORT (SUM (total_amount)) OVER () * 100,2) AS ratio_perc
+FROM sales s
+GROUP BYSELECT TRUNC(sales_date,'mon'); 
