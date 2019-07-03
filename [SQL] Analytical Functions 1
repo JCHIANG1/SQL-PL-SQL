@@ -46,3 +46,31 @@ SUM (total_amount) AS total_amount,
 ROUND(RATIO_TO_REPORT (SUM (total_amount)) OVER () * 100,2) AS ratio_perc
 FROM sales s
 GROUP BYSELECT TRUNC(sales_date,'mon'); 
+
+--Example 5) Rank function produces an ordered ranking of rows starting with a rank of one
+SELECT TRUNC(s.sales_date,'mon') AS sales_month, sp.fitst_name, SUM(s.total_amount)
+RANK () OVER (PARTITION BY TRUNC(s.sales_date,'mon') ORDER BY SUM(s.total_amount) DESC) AS salesperson_rank_top
+FROM sales s, salesperson sp
+WHERE s.slaesperson_id = sp.salesperson_id
+GROUP BY TRUNC(s.sales_date,'mon'),sp.fitst_name;
+
+--Example 6) top N analysis: showing the top 3 salesperson per month
+--if asking for the bottom 3 then delete the DESC
+SELECT * FROM 
+(
+SELECT TRUNC(s.sales_date,'mon') AS sales_month, sp.fitst_name, SUM(s.total_amount)
+RANK () OVER (PARTITION BY TRUNC(s.sales_date,'mon') ORDER BY SUM(s.total_amount) DESC) AS salesperson_rank_top
+FROM sales s, salesperson sp
+WHERE s.slaesperson_id = sp.salesperson_id
+GROUP BY TRUNC(s.sales_date,'mon'),sp.fitst_name
+)
+WHERE salesperson_rank_top <= 3
+
+--Example 7) NTILE function, devide a list of values in a partition into a specific number of groups called bands or buckets
+
+SELECT sp.first_name, SUM(s.total_amount) AS total_amount,
+NTILE(3) OVER (ORDER BY SUM(s.total_amount) DESC) AS bucket_list
+FROM sales s, salesperson sp
+WHERE s.salesperson_id=sp.salesperson_id
+GROUP BY sp.first_name;
+
