@@ -1,0 +1,28 @@
+--analytical functions compute an aggregate value based on a group of rows.
+--thet differ from aggregate functions in that they return multiple rows for each group.
+--the group of rows is called a window and is defined by the analytic clause
+
+--4 analytic families
+--Ranking family: RANK, DENSE_RANK, PERCENT_RANK, CUME_DIST, NTILE
+--Window aggregate family: the feature provides moving and cumulative processing for all SQL aggregate function
+including AVG, SUM, MIN, MAX COUNT, VARIANCE
+--Reporting aggregate family: the comparison of a non-aggregate value to an aggregate value, AVG, SUM, MIN, MAX, 
+COUNT, VARIANCE, STDDEV
+--LAG/LEAD family: enable queries to compare different rows of a table simply by specifying an offset from the
+current row.
+
+
+--Example 1) compare non-aggregated data and aggregated data
+--before analytical functions
+SELECT sales_date, order_id, product_id, sales_amount,avg_samount
+FROM sales,(SELECT AVG(sales_amount) AS avg_samount FROM sales);
+
+--applying the analytical function 
+SELECT sales_date, order_id, product_id, sales_amount,
+AVG(sales_amount) OVER () AS avg_samount
+FROM sales;
+
+--applying the analytical function based on specific window instead of the whole table
+SELECT sales_date, order_id, product_id, sales_amount,
+AVG(sales_amount) OVER (PARTITION BY sales_date) AS sales_amount
+FROM sales;
