@@ -74,3 +74,31 @@ FROM sales s, salesperson sp
 WHERE s.salesperson_id=sp.salesperson_id
 GROUP BY sp.first_name;
 
+--Example 8) LAG and LEAD function
+--we may need to analyze the change in monthly sales versus a year ago or the variance between budget and 
+--actual costs
+SELECT TRUNC(sales_date,'mon') AS sales_month, SUM(sales_amount) AS sales_amount,
+LAG(SUM(sales_amount),1) OVER (ORDER BY TRUNC(sales_date,'mon')) AS previous_month,
+LEAD(SUM(sales_amount),1) OVER (ORDER BY TRUNC(sales_date,'mon')) AS next_month
+FROM sales s
+GROUP BY TRUNC(sales_date,'mon');
+
+--Example 9) calculate the sales growth across time with LAG and LEAD function
+SELECT sales_month, sales_amount, previous_month,
+ROUND(((sales_amount - previous_month) / previous_month) * 100,2) AS growth_percentage
+FROM 
+(
+SELECT TRUNC(sales_date,'mon') AS sales_month, SUM(sales_amount) AS sales_amount,
+LAG(SUM(sales_amount),1) OVER (ORDER BY TRUNC(sales_date,'mon')) AS previous_month,
+LEAD(SUM(sales_amount),1) OVER (ORDER BY TRUNC(sales_date,'mon')) AS next_month
+FROM sales s
+GROUP BY TRUNC(sales_date,'mon')
+);
+
+
+
+
+
+
+
+
