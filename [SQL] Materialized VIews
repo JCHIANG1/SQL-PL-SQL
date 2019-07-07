@@ -1,0 +1,20 @@
+--a materialized view is a table segment whose contents are periodically regreshed based on a query, 
+--either against a local or remote table
+--advantage: a) replication of data between sites
+--b) improve performance: data can be summarized, pre computed and stored so that we can access the summarized data
+--for reporting purposes
+
+--Materialized views options
+--the BUILD clause options are shown below
+--IMMEDIATE: the materialized view is populated immediately, the data is stored
+--DEFFERED: the materialized view is populated first when requested then refresh, the data is stored in the view when refresh
+
+-- refresh type available:
+--FAST: while the data is refreshing it updates the change to the view, its advantage is that it's fast but
+--the materialized view log is required, without the log presented against the source table in advance, the creation fail.
+--COMPLETE: the table segment supporting the materialized view is truncated and repopulated completely using the associated query.
+--FORCE: a FAST refresh is attempted, if one is not possible a complete refresh is performed.
+
+--a refresh can be triggered in one of two ways:
+--ON COMMIT: the refresh is triggered by a committed data change in one of the dependent table
+--ON DEMAND: the refresh is initiated by a manual request or a scheduled task
