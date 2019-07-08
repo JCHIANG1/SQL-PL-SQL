@@ -1,0 +1,69 @@
+--a materialized view is a table segment whose contents are periodically regreshed based on a query, 
+--either against a local or remote table
+--advantage: a) replication of data between sites
+--b) improve performance: data can be summarized, pre computed and stored so that we can access the summarized data
+--for reporting purposes
+
+--Materialized views options
+--the BUILD clause options are shown below:
+--IMMEDIATE: the materialized view is populated immediately, the data is stored
+--DEFFERED: the materialized view is populated first when requested then refresh, the data is stored in the view when refresh
+
+-- refresh type available:
+--FAST: while the data is refreshing it updates the change to the view, its advantage is that it's fast but
+--the materialized view log is required, without the log presented against the source table in advance, the creation fail.
+--COMPLETE: the table segment supporting the materialized view is truncated and repopulated completely using the associated query.
+--FORCE: a FAST refresh is attempted, if one is not possible a complete refresh is performed.
+
+--a refresh can be triggered in one of two ways:
+--ON COMMIT: the refresh is triggered by a committed data change in one of the dependent table, whenever the DDL  
+--is performed on the based tabledata and the commited is also performed, the changes will be reflected to the view.
+--ON DEMAND: the refresh is initiated by a manual request or a scheduled task
+
+--Example 1) Materialized views with ON COMMIT option
+--the ON COMMIT option is very costly so use it very carefully
+CREATE MATERIALIZED VIEW sales_c_mv
+BUILD IMMEDIATE 
+REFRESH FORCE
+ON COMMIT
+AS
+(
+SELECT s.sales_date, s.order_id, s.product_id, s.customer_id, s.salesperson_id, s.quantity, s.unit_price,
+s.sales_amount, s.tax_amount, s.total_amount, p.product_name
+FROM sales s, product p
+WHERE s.product_id = p.product_id
+);
+
+--there are 88 rows in the view since there are 88 rows from the sales table
+SELECT * FROM sales_c_mv
+
+--after commit the insert statement 
+INSERT INTO sales VALUES('12-jan-2015',1589,101,12,1000,20,20,400,40,440);
+SELECT * FROM sales_c_mv;--89 rows now / the data is updated to the view immediately the same goes to DELETE and UPDATE clause
+
+--Example 2) Materialized views with ON DEMAND option
+--less expensive method so it's commanly used
+--the view is not refreshed as soon as the based table is commited, the refresh is initiated manually or through a schedule task
+
+CREATE MATERIALIZED VIEW sales_d_mv ---change the name here
+BUILD IMMEDIATE 
+REFRESH FORCE
+ON DEMAND ---change the syntex here 
+AS
+(
+SELECT s.sales_date, s.order_id, s.product_id, s.customer_id, s.salesperson_id, s.quantity, s.unit_price,
+s.sales_amount, s.tax_amount, s.total_amount, p.product_name
+FROM sales s, product p
+WHERE s.product_id = p.product_id
+);
+
+SELECT * FROM sales_d_mv; --- 89 rows
+
+INSERT INTO sales VALUES('12-jan-2015',1520,101,12,1000,20,20,400,40,440);---insert another row and hit commit
+
+SELECT * FROM sales_d_mv; --- still 89 rows cuz not yet manually initiated the task
+
+--refresh the materialized view manually
+EXEC DBMS_MVIEW.REFRESH('SALES_D_MV'); ---view name has to be capital
+
+SELECT * FROM sales_d_mv; --- as soon as we initialized the task the data has updated in the view and shows there are 90 rows 
