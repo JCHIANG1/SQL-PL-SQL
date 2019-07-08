@@ -1,0 +1,71 @@
+--refresh option: 
+--FAST: incremental refresh (reflect only changes from base table since last refresh to the materialized view )
+--FAST refreshable materialized views can be created based on master tables and master materialized views only
+--materialized views based on a synonym or a view must be complete refreshed, fast view is not allowed.
+--materialized views are not eligible for fast refresh if the defined subquery contains an analytic function
+
+--STEP 1) create a materialized view log
+--the log will capture all the changes happen in the base table
+--there are 2 options if the table has PRIMARY KEY then use option 1 else use option 2
+
+CREATE MATERIALIZED VIEW LOG ON sales
+WITH PRIMARY KEY
+INCLUDING NEW VALUES;
+
+OR
+
+CREATE MATERIALIZED VIEW LOG ON sales
+WITH ROWID
+INCLUDING NEW VALUES;
+
+--since the sales table has no primary key here we will have to use the row id option
+--since the query below involved 2 tables sales and product, we also have to create the product view
+--when ever we are using the row id option we have to also fetch the table row id in the select clause
+
+CREATE MATERIALIZED VIEW LOG ON product
+WITH ROWID
+INCLUDING NEW VALUES;
+
+--STEP 2) 
+CREATE MATERIALIZED VIEW sales_f_mv
+BUILD IMMEDIATE
+REFRESH FAST
+ON DEMAND
+AS
+(
+SELECT s.ROWID, p.ROWID, 
+s.sales_date, s.order_id, s.product_id, s.unit_price, s.sales_amount, s.tax_amount, s.total_amount, p.product_name
+FROM sales s, product p
+WHERE s.product_id = p.product_id
+);
+
+
+--Set time for refresh
+--in the example below, the first copy of the materialized view is made at SYSDATE (immediately)
+--and the interval at which the refresh has to be performed is every seven days
+CREATE MATERIALIZED  VIEW sales_mv1
+BUILD IMMEDIATE
+REFRESH FORCE
+ON DEMAND
+START WITH SYSDATE NEXT SYSDATE + 7
+AS
+(
+s.sales_date, s.order_id, s.product_id, s.unit_price, s.sales_amount, s.tax_amount, s.total_amount, p.product_name
+FROM sales s, product p
+WHERE s.product_id = p.product_id
+);
+
+--refresh every minute
+START WITH SYSDATE NEXT SYSDATE + 1 / (24*60)
+
+--refresh every 30 minutes
+START WITH SYSDATE NEXT SYSDATE + 30 / (24*60)
+
+--refresh every 60 minutes
+START WITH SYSDATE NEXT SYSDATE + 60 / (24*60)
+
+
+
+
+
+
