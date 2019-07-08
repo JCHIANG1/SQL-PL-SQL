@@ -1,0 +1,6 @@
+--the escape character
+--use the escape character '\' to search for a character that is normally treated as a meta character
+
+--for example to search for the '+' character, use the following regular expression
+SELECT * FROM salesperson
+WHERE REGEXP_LIKE(address_line1,'\+');
