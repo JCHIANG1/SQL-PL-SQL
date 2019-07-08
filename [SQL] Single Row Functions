@@ -44,6 +44,12 @@ TRIM(BOTH '1' FROM '123tech1111') --23tech
 TRIM(LEADING '0' FROM '00012435') -- '12435'
 TRIM(TRAILING '1' FROM 'tech1') --'tech'
 
+--the escape character
+--use the escape character '\' to search for a character that is normally treated as a meta character
+--for example to search for the '+' character, use the following regular expression
+SELECT * FROM salesperson
+WHERE REGEXP_LIKE(address_line1,'\+');
+
 --<Number function>
 --round function
 -- the function returns a number rounded to a certain number of decimal places
