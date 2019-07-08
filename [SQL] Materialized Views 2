@@ -87,21 +87,3 @@ SUM(s.total_amount)
 FROM sales s, product p
 WHERE s.product_id = p.product_id
 GROUP BY TRUNC(s.sales_date,'mon'),p.product_name
-
-
---FLASHBACK operations
-flashback query allows the contents of a table to be queried with reference to a specific point in time
-
---the region of the customer_id=12 was north before 2015-10-13 7:00 pm
-UPDATE customer SET region ='SOUTH' WHERE customer_id =12
-
---the query below shows that the region of customer_id=12 is north
-SELECT * FROM customer AS OF TIMESTAMP
-TO_TIMESTAMP('2015-08-13 13:34:12','YYYY-MM-DD HH24:MI:SS')
-
-
-
-
-
-
-
