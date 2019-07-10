@@ -9,8 +9,10 @@ psql --to enter the psql terminal
 --create a new database
 CREATE DATABASE test;
 
---to see all the tables we have in db
+--to see all the objects we have in db
 \d
+--to see just table info
+\dt
 --describe the table
 \d table_name
 
