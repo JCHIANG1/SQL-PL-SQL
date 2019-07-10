@@ -1,0 +1,33 @@
+--In windows PostgreSQL can be access from the shell after providing the password
+--some useful command
+
+psql --to enter the psql terminal
+\q --quit the PostgreSQL
+\? --some command manu
+\l --list all the db in our computer
+
+--create a new database
+CREATE DATABASE test;
+
+--to see all the tables we have in db
+\d
+--describe the table
+\d table_name
+
+--not in the terminal
+psql --help --command manu
+
+--connect to the db test
+--two options
+--1.
+psql -h localhost -p 5432 -U amigoscode test  
+--the port and the username are defaul, if the host is the remote server then we have to provide ip address
+
+--2.
+psql
+\c test;
+
+--delete the db
+--all the content is lost after runing the command
+DROP DATABASE test;
+
