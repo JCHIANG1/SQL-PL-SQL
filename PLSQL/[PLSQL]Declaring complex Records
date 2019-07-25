@@ -1,0 +1,34 @@
+/*type RECORD*/
+--The RECORD is user-defined data type allows more flexibility than %ROWTYPE.
+--%ROWTYPE must match an existing table, RECORD allows any combination of data type.
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+  
+  TYPE EmpRecord
+    IS RECORD (ssn    employee.ssn%TYPE,
+               LNmae  employee.lname%TYPE,
+               DNmae  department.DName%TYPE,
+               BonusPayment NUMBER(6)
+               );
+  
+  ActiveEmp    EmpRecord;
+  InactiveEmp  EmpRcord;
+
+BEGIN
+--retrieve the active employee detail
+SELECT essn, Lname, Dname, 5000
+INTO ActiveEmp
+FROM employee, department, works_on
+WHERE employee.dno = department.dnumber
+AND emplyee.ssn = works_on.essn
+AND hours = (SELECT MAX(hour) FROM works_on)
+AND ROWNUM <=1;
+
+--output the results
+DBMS_OUTPUT.PUT_LINE('Active employee name: '|| ActiveEmp.LName);
+DBMS_OUTPUT.PUT_LINE('Active employee department: ' || ActiveEmp.Dname);
+DBMS_OUTPUT.PUT_LINE('Active employee bonus: $' || ActiveEmp.BonusPayment);
+
+END;
