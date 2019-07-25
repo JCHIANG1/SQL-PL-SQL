@@ -1,0 +1,51 @@
+/* type table */
+-- table types are used to ceate single dimensional tables, these are useful when storing arrays of value retrieved from the database.
+
+/*Example/
+SET SERVEROUTPUT ON;
+
+DECLARE
+  --declare the table
+  TYPE EmpSSNarray
+    IS TABLE OF employee.ssn%TYPE
+    INDEX BY SIMPLE_INTEGER;
+  
+  --declare variables using the table
+  ManagementList  EmpSSNarray;
+  WorkerList      EmpSSNarray;
+
+BEGIN
+  --retrieve the first supervisor
+  SELECT superssn
+  INTO ManagementList(1) --(1) very first instance/ row 
+  FROM employee
+  WHERE superssn IS NOT NULL AND ROWNUM <= 1; --ROWNUM specify the number of records to return
+  
+  --retrieve the second supervisor
+  SELECT superssn
+  INTO ManagementList(2)
+  FROM employee 
+  WHERE superssn IS NOT NULL 
+  AND ROWNUM <=1 AND superssn <> ManagementList(1);
+  
+  --retrieve the first worker
+  SELECT essn 
+  INTO WorkerList(1)
+  FROM works_on
+  WHERE hour IS NOT NULL
+  AND ROWNUM <=1
+  AND essn NOT IN (ManagementList(1),ManagementList(2));
+  
+  --retrieve the second worker
+  SELECT essn
+  INTO WorkerList(2)
+  FROM works_on
+  WHERE hour IS NOT NULL
+  AND ROWNUM <=1
+  AND essn NOT IN (ManagementList(1),ManagementList(2),WorkerList(1));
+  
+  --output the results
+  DBMS_OUTPUT.PUT_LINE('Managers are: ' || ManaggementList(1) || ',' ||  ManaggementList(2))
+  DBMS_OUTPUT.PUT_LINE('Workers are:' || WorkerList(1) || ',' || WorkerList(2))
+
+END;
